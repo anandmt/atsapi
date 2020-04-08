@@ -1,3 +1,6 @@
 atsapi/.vs/
 atsapi/atsapi/obj/
 atsapi/obj/
+.vs/
+.vscode/
+obj/

@@ -24,10 +24,19 @@ namespace atsapi
         }
 
         public IConfiguration Configuration { get; }
-
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                builder =>
+                {
+                    builder.WithOrigins("http://127.0.0.1:5500",
+                                        "http://127.0.0.1:5500/index.html");
+                });
+            });
             services.Configure<AtsDatabaseSettings>(
                 Configuration.GetSection(nameof(AtsDatabaseSettings)));
 
@@ -45,7 +54,7 @@ namespace atsapi
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors(MyAllowSpecificOrigins);
             app.UseHttpsRedirection();
 
             app.UseRouting();
